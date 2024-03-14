@@ -340,21 +340,21 @@
     "href": "index.html#application-to-datasets",
     "title": "Time Series Analysis Presentation Midterm",
     "section": "Application to Datasets:",
-    "text": "Application to Datasets:\n\n\nFor GDP and CPI Energy datasets, we can follow these steps:\n\n\n1. Simulation to Demonstrate Theory:\n\n\nGenerate synthetic time series data that resembles the GDP and CPI Energy datasets.\nApply the ARIMA and state space models to this synthetic data to demonstrate how the models capture various components like trends and seasonal effects."
+    "text": "Application to Datasets:\n\n\nFor GDP and CPI Energy datasets, we can follow these steps:\n\n\n1. Simulation to Demonstrate Theory:\n\n\nGenerate synthetic time series data that resembles the GDP and CPI Energy datasets.\nApply the ARIMA and State Space models to this synthetic data to demonstrate how the models capture various components like trends and seasonal effects."
   },
   {
     "objectID": "index.html#section-3",
     "href": "index.html#section-3",
     "title": "Time Series Analysis Presentation Midterm",
     "section": "",
-    "text": "2. Fit Model to Your Dataset:\n\n\n\nUse historical data for GDP and CPI Energy to fit the ARIMA and state space models.\nDetermine the optimal parameters (e.g., p,d,q for ARIMA) using techniques like grid search and AIC/BIC minimization.\nFor the state space model, estimate the smoothing parameters and seasonal components."
+    "text": "2. Fit Model to Your Dataset:\n\n\n\nUse historical data for GDP and CPI Energy to fit the ARIMA and State Space models.\nDetermine the optimal parameters (e.g., p,d,q for ARIMA) using techniques like grid search and AIC/BIC minimization.\nFor the State Space model, estimate the smoothing parameters and seasonal components."
   },
   {
     "objectID": "index.html#section-4",
     "href": "index.html#section-4",
     "title": "Time Series Analysis Presentation Midterm",
     "section": "",
-    "text": "3. Discuss Model Fit Diagnostics:\n\n\n\nAnalyze residuals to check for any patterns or non-randomness.\nUse diagnostic plots like the autocorrelation function (ACF) and partial autocorrelation function (PACF) plots for ARIMA residuals.\nFor the state space model, check if the level, trend, and seasonal components accurately capture the corresponding elements in the data.\nCompare the models using information criteria and out-of-sample prediction performance to assess their goodness of fit.\n\n\nThe above outlines a general approach to modeling GDP and CPI Energy datasets using time series methods."
+    "text": "3. Discuss Model Fit Diagnostics:\n\n\n\nAnalyze residuals to check for any patterns or non-randomness.\nUse diagnostic plots like the autocorrelation function (ACF) and partial autocorrelation function (PACF) plots for ARIMA residuals.\nFor the State Space model, check if the level, trend, and seasonal components accurately capture the corresponding elements in the data.\nCompare the models using information criteria and out-of-sample prediction performance to assess their goodness of fit.\n\n\nThe above outlines a general approach to modeling GDP and CPI Energy datasets using time series methods."
   },
   {
     "objectID": "index.html#gdp-data-simulation-and-arima-model-fit",
