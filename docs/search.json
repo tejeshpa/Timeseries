@@ -1,0 +1,464 @@
+[
+  {
+    "objectID": "Finalpresentation.html#section",
+    "href": "Finalpresentation.html#section",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "In this presentation, we will analyze a multivariate time series dataset and perform modeling and forecasting using R.\n\nDatasets chosen:\nGross Domestic Product (GDP) dataset and the Consumer Price Index (CPI) Energy dataset.\n\nWe have chosen these datasets to explore the link between economic growth and energy prices, providing fresh insights for decision-making."
+  },
+  {
+    "objectID": "Finalpresentation.html#section-1",
+    "href": "Finalpresentation.html#section-1",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "Loading the required libraries:\n\n\n# Load required libraries\nlibrary(datasets)\nlibrary(forecast)\nlibrary(ggplot2)\n\n\nLoading both the datasets:\n\n\n# Load GDP dataset\ngdp_data &lt;- read.csv(\"GDP.csv\")\n\n# Load Consumer Price Index Energy dataset\ncpi_data &lt;- read.csv(\"CUUR0000SASLE.csv\")"
+  },
+  {
+    "objectID": "Finalpresentation.html#plotting-the-gdp-data",
+    "href": "Finalpresentation.html#plotting-the-gdp-data",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Plotting the GDP data",
+    "text": "Plotting the GDP data"
+  },
+  {
+    "objectID": "Finalpresentation.html#plotting-the-cpi-data",
+    "href": "Finalpresentation.html#plotting-the-cpi-data",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Plotting the CPI data",
+    "text": "Plotting the CPI data"
+  },
+  {
+    "objectID": "Finalpresentation.html#gdp-data---empirical-data-analysis",
+    "href": "Finalpresentation.html#gdp-data---empirical-data-analysis",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "GDP Data - Empirical Data Analysis",
+    "text": "GDP Data - Empirical Data Analysis\n\n\n      DATE                 GDP         \n Min.   :1947-01-01   Min.   :  243.2  \n 1st Qu.:1966-03-09   1st Qu.:  802.7  \n Median :1985-05-16   Median : 4340.8  \n Mean   :1985-05-16   Mean   : 7159.3  \n 3rd Qu.:2004-07-24   3rd Qu.:12360.8  \n Max.   :2023-10-01   Max.   :27944.6  \n\n\n\n\n\nThis dataset uses a range of numbers to summarise GDP growth over a significant amount of time, most likely decades.\nThe lowest and maximum GDP numbers indicate a definite upward tendency in the expansion of the economy.\nSince the median number is significantly greater than the minimum, most years had GDPs that were higher than the lowest.\nThe difference between the maximum and median values indicates that certain years saw significantly more growth than the average."
+  },
+  {
+    "objectID": "Finalpresentation.html#gdp-data---acf-pacf-plots-diagnostics",
+    "href": "Finalpresentation.html#gdp-data---acf-pacf-plots-diagnostics",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "GDP data - ACF, PACF Plots & Diagnostics",
+    "text": "GDP data - ACF, PACF Plots & Diagnostics"
+  },
+  {
+    "objectID": "Finalpresentation.html#gdp-data---acf-pacf-plots-diagnostics-1",
+    "href": "Finalpresentation.html#gdp-data---acf-pacf-plots-diagnostics-1",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "GDP data - ACF, PACF Plots & Diagnostics",
+    "text": "GDP data - ACF, PACF Plots & Diagnostics\n\n\n\nThe ACF plot at lag 1 indicates a strong correlation between current and immediate past GDP, suggesting the potential influence of the latter on the former.\nThe diminishing spikes in the ACF plot with increasing lags hint at possible seasonality, which weakens over time.\nA significant rise at lag 1 in the PACF plot supports using an AR(1) model for GDP forecasting, utilizing the previous value plus an error term.\nThe absence of significant spikes at higher lags in the PACF suggests that more complex autoregressive models might be unnecessary."
+  },
+  {
+    "objectID": "Finalpresentation.html#cpi-energy-consumption---empirical-data-analysis",
+    "href": "Finalpresentation.html#cpi-energy-consumption---empirical-data-analysis",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "CPI Energy Consumption - Empirical Data Analysis",
+    "text": "CPI Energy Consumption - Empirical Data Analysis\n\n\n      DATE            CUUR0000SASLE  \n Min.   :1957-01-01   Min.   : 21.4  \n 1st Qu.:1973-10-01   1st Qu.: 42.1  \n Median :1990-07-01   Median :142.8  \n Mean   :1990-07-01   Mean   :155.8  \n 3rd Qu.:2007-04-01   3rd Qu.:251.7  \n Max.   :2024-01-01   Max.   :408.1  \n\n\n\n\n\nThis large dataset examines the Consumer Price Index for Energy Services (CUUR0000SASLE) and spans probably more than 80 years.\nThe huge gap between the lowest and greatest numbers (21.4 vs. 408.1) points to a long-term, substantial increase in the cost of energy services.\nA skewed distribution is shown by the median (142.8) being lower than the mean (155.8), with more years having lower CUUR0000SASLE values."
+  },
+  {
+    "objectID": "Finalpresentation.html#cpi-energy-consumption-acf-pacf-plots-diagnostics",
+    "href": "Finalpresentation.html#cpi-energy-consumption-acf-pacf-plots-diagnostics",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "CPI-Energy Consumption ACF, PACF Plots & Diagnostics",
+    "text": "CPI-Energy Consumption ACF, PACF Plots & Diagnostics"
+  },
+  {
+    "objectID": "Finalpresentation.html#cpi-energy-consumption-acf-pacf-plots-diagnostics-1",
+    "href": "Finalpresentation.html#cpi-energy-consumption-acf-pacf-plots-diagnostics-1",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "CPI-Energy Consumption ACF, PACF Plots & Diagnostics",
+    "text": "CPI-Energy Consumption ACF, PACF Plots & Diagnostics\n\n\n\nAn effective plot shows errors distributed evenly along a straight line, suggesting a normal, bell-shaped distribution.\nClustering of points should be avoided, indicating unbiased error distribution.\nThe absence of curves or peculiar patterns in the line points to normally distributed errors.\nWhile a good visual plot is encouraging, further analysis is necessary to confirm the errors’ normal distribution."
+  },
+  {
+    "objectID": "Finalpresentation.html#section-2",
+    "href": "Finalpresentation.html#section-2",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "To address the task given for GDP and Consumer Price Index (CPI) Energy datasets using time series modeling, we can consider using two commonly employed models for such data:\n\nAutoregressive Integrated Moving Average (ARIMA) model and\nExponential Smoothing State Space Model (ETS)"
+  },
+  {
+    "objectID": "Finalpresentation.html#arima-model",
+    "href": "Finalpresentation.html#arima-model",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "ARIMA Model:",
+    "text": "ARIMA Model:\n\nNotation:\n\n\\(Y_t\\): the time series data at time \\(t\\)\n\\(\\nabla Y_t\\): the differenced series (e.g., \\(Y_t - Y_{t-1}\\)) to achieve stationarity\n\\(p\\): the number of lag observations included in the model (autoregressive terms)\n\\(d\\): the degree of differencing\n\\(q\\): the size of the moving average window"
+  },
+  {
+    "objectID": "Finalpresentation.html#relevant-mathematical-background",
+    "href": "Finalpresentation.html#relevant-mathematical-background",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Relevant Mathematical Background:",
+    "text": "Relevant Mathematical Background:\n\n\nThe model is defined by the equation: \\(\\nabla^d Y_t = \\alpha + \\sum_{i=1}^{p} \\phi_i \\nabla^d Y_{t-i} + \\sum_{i=1}^{q} \\theta_i \\epsilon_{t-i} + \\epsilon_t\\)\nWhere \\(\\alpha\\) is a constant, \\(\\phi_i\\) are the parameters for the autoregressive terms, \\(\\theta_i\\) are the parameters for the moving average terms, and \\(\\epsilon_t\\) is white noise."
+  },
+  {
+    "objectID": "Finalpresentation.html#ets-model",
+    "href": "Finalpresentation.html#ets-model",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "ETS Model",
+    "text": "ETS Model\n\nNotation:\n\n\\(Y_t\\): the time series data at time \\(t\\)\n\\(\\alpha, \\beta, \\gamma\\): smoothing parameters for the level, trend, and seasonal components, respectively\n\\(l_t\\): level at time \\(t\\)\n\\(b_t\\): trend at time \\(t\\)\n\\(s_t\\): seasonal component at time \\(t\\)"
+  },
+  {
+    "objectID": "Finalpresentation.html#relevant-mathematical-background-1",
+    "href": "Finalpresentation.html#relevant-mathematical-background-1",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Relevant Mathematical Background:",
+    "text": "Relevant Mathematical Background:\n\n\nThe model components are updated as follows:\n\nLevel: \\(l_t = \\alpha (Y_t - s_{t-L}) + (1 - \\alpha)(l_{t-1} + b_{t-1})\\)\nTrend: \\(b_t = \\beta (l_t - l_{t-1}) + (1 - \\beta)b_{t-1}\\)\nSeasonality: \\(s_t = \\gamma (Y_t - l_{t-1} - b_{t-1}) + (1 - \\gamma)s_{t-L}\\)\n\nWhere \\(L\\) is the length of the seasonal cycle."
+  },
+  {
+    "objectID": "Finalpresentation.html#application-to-datasets",
+    "href": "Finalpresentation.html#application-to-datasets",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Application to Datasets:",
+    "text": "Application to Datasets:\n\n\nFor GDP and CPI Energy datasets, we can follow these steps:\n\n\n1. Simulation to Demonstrate Theory:\n\n\nGenerate synthetic time series data that resembles the GDP and CPI Energy datasets.\nApply the ARIMA and ETS models to this synthetic data to demonstrate how the models capture various components like trends and seasonal effects."
+  },
+  {
+    "objectID": "Finalpresentation.html#section-3",
+    "href": "Finalpresentation.html#section-3",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "2. Fit Model to Your Dataset:\n\n\n\nUse historical data for GDP and CPI Energy to fit the ARIMA and ETS models.\nDetermine the optimal parameters (e.g., p,d,q for ARIMA) using techniques like grid search and AIC/BIC minimization.\nFor the ETS model, estimate the smoothing parameters and seasonal components."
+  },
+  {
+    "objectID": "Finalpresentation.html#section-4",
+    "href": "Finalpresentation.html#section-4",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "3. Discuss Model Fit Diagnostics:\n\n\n\nAnalyze residuals to check for any patterns or non-randomness.\nUse diagnostic plots like the autocorrelation function (ACF) and partial autocorrelation function (PACF) plots for ARIMA residuals.\nFor the ETS model, check if the level, trend, and seasonal components accurately capture the corresponding elements in the data.\nCompare the models using information criteria and out-of-sample prediction performance to assess their goodness of fit.\n\n\nThe above outlines a general approach to modeling GDP and CPI Energy datasets using time series methods."
+  },
+  {
+    "objectID": "Finalpresentation.html#gdp-data-simulation-and-arima-model-fit",
+    "href": "Finalpresentation.html#gdp-data-simulation-and-arima-model-fit",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "GDP Data Simulation and Arima Model fit",
+    "text": "GDP Data Simulation and Arima Model fit\n\n\n# Quick simulation for ARIMA model\nset.seed(123)\narima_sim &lt;- arima.sim(model = list(order = c(1,1,1), \n                                    ar = 0.7, ma = -0.5), n = 100)\n\n\n\n# Convert GDP data to a time series object\ngdp_ts &lt;- ts(gdp_data$GDP, start = c(1947, 1), frequency = 4)\n\n\n\n# Fit ARIMA model to GDP time series\narima_model_gdp &lt;- auto.arima(gdp_ts)"
+  },
+  {
+    "objectID": "Finalpresentation.html#diagnostic-statistics-of-arima-model",
+    "href": "Finalpresentation.html#diagnostic-statistics-of-arima-model",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": " Diagnostic statistics of ARIMA model ",
+    "text": "Diagnostic statistics of ARIMA model \n\n\n\n\n    Ljung-Box test\n\ndata:  Residuals from ARIMA(0,2,2)\nQ* = 6.1338, df = 6, p-value = 0.4084\n\nModel df: 2.   Total lags used: 8"
+  },
+  {
+    "objectID": "Finalpresentation.html#section-5",
+    "href": "Finalpresentation.html#section-5",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "A proper residuals plot with errors randomly centered around zero suggests no underlying patterns, indicating the model’s accuracy without consistent bias.\nResiduals evenly spread around zero reflect the model’s effectiveness in capturing the data’s trend, avoiding systematic over or underestimation.\nThe absence of outliers is crucial, as they can point to external factors unaccounted for by the model.\nDespite a satisfactory residuals plot, further validation is recommended to ensure model reliability and address potential data issues.\nThe residuals plot serves as a tool for identifying improvement areas and assessing the ARIMA model’s fit.\nThe Ljung-Box test result implies the residuals are likely random, supporting model validity.\nA high p-value (0.40) indicates minimal concerns about residual randomness.\nStill, it is essential to scrutinize the residuals plot for unusual patterns as a precaution.\nCollectively, these insights hint at the ARIMA(0,2,2) model being a potentially suitable choice."
+  },
+  {
+    "objectID": "Finalpresentation.html#simulation-and-state-space-model-fit-on-cpi-energy-consumption",
+    "href": "Finalpresentation.html#simulation-and-state-space-model-fit-on-cpi-energy-consumption",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Simulation and State Space Model fit on CPI-Energy Consumption",
+    "text": "Simulation and State Space Model fit on CPI-Energy Consumption\n\n\n# Convert CPI column to time series object\ncpi_ts &lt;- ts(cpi_data$CUUR0000SASLE, start = min(cpi_data$DATE), frequency = 12)  \n\n\n\n# Fit state space model to energy consumption data\nstsm_model_cpi &lt;- StructTS(cpi_ts)"
+  },
+  {
+    "objectID": "Finalpresentation.html#diagnostic-statistics-of-state-space-model",
+    "href": "Finalpresentation.html#diagnostic-statistics-of-state-space-model",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": " Diagnostic statistics of State Space model",
+    "text": "Diagnostic statistics of State Space model\n\n\n\n\n    Ljung-Box test\n\ndata:  Residuals from StructTS\nQ* = 612.83, df = 24, p-value &lt; 2.2e-16\n\nModel df: 0.   Total lags used: 24"
+  },
+  {
+    "objectID": "Finalpresentation.html#section-6",
+    "href": "Finalpresentation.html#section-6",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "The Ljung-Box test indicates potential issues with a high Q* and low p-value.\nThis suggests the model’s residuals are not random but show dependency, indicating autocorrelation.\nThe influence of past errors on current errors isn’t being sufficiently addressed by the model.\nThe autocorrelation concern persists across multiple time steps (24 lags).\nThese findings suggest the need for adjustments to the Structural Time Series model to address the non-random error behavior."
+  },
+  {
+    "objectID": "Finalpresentation.html#gdp-forecasting-using-arima",
+    "href": "Finalpresentation.html#gdp-forecasting-using-arima",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "GDP Forecasting Using ARIMA",
+    "text": "GDP Forecasting Using ARIMA\n\n\n\n[1] \"ARIMA Forecast for GDP:\"\n\n\n        Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95\n2024 Q1       28318.10 28101.50 28534.71 27986.83 28649.37\n2024 Q2       28689.51 28389.74 28989.28 28231.05 29147.97\n2024 Q3       29060.92 28686.46 29435.38 28488.23 29633.61\n2024 Q4       29432.33 28986.70 29877.96 28750.79 30113.87\n2025 Q1       29803.74 29288.42 30319.06 29015.62 30591.85\n2025 Q2       30175.15 29590.59 30759.70 29281.14 31069.15\n2025 Q3       30546.55 29892.61 31200.50 29546.43 31546.67\n2025 Q4       30917.96 30194.12 31641.80 29810.95 32024.98\n2026 Q1       31289.37 30494.89 32083.86 30074.31 32504.43\n2026 Q2       31660.78 30794.74 32526.82 30336.29 32985.27\n2026 Q3       32032.19 31093.59 32970.79 30596.72 33467.66\n2026 Q4       32403.60 31391.34 33415.85 30855.49 33951.71"
+  },
+  {
+    "objectID": "Finalpresentation.html#plot-arima-forecast-for-gdp",
+    "href": "Finalpresentation.html#plot-arima-forecast-for-gdp",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Plot ARIMA forecast for GDP",
+    "text": "Plot ARIMA forecast for GDP"
+  },
+  {
+    "objectID": "Finalpresentation.html#cpi-energy-forecasting-using-state-space",
+    "href": "Finalpresentation.html#cpi-energy-forecasting-using-state-space",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "CPI-Energy Forecasting using State Space",
+    "text": "CPI-Energy Forecasting using State Space\n\n\n\n[1] \"State Space Model Forecast for CPI Energy:\"\n\n\n         Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95\nFeb 2024       410.7652 410.1985 411.3318 409.8985 411.6318\nMar 2024       413.4781 412.2109 414.7452 411.5402 415.4160\nApr 2024       416.1914 414.0711 418.3118 412.9487 419.4342\nMay 2024       418.9048 415.8009 422.0086 414.1579 423.6517\nJun 2024       421.6182 417.4155 425.8208 415.1908 428.0455\nJul 2024       424.3315 418.9257 429.7373 416.0640 432.5990\nAug 2024       427.0449 420.3398 433.7500 416.7903 437.2994\nSep 2024       429.7582 421.6644 437.8521 417.3797 442.1367\nOct 2024       432.4716 422.9049 442.0383 417.8405 447.1026\nNov 2024       435.1850 424.0658 446.3041 418.1797 452.1902\nDec 2024       437.8983 425.1511 450.6456 418.4031 457.3935\nJan 2025       440.6113 426.1636 455.0590 418.5155 462.7071"
+  },
+  {
+    "objectID": "Finalpresentation.html#plot-arima-forecast-for-cpi-energy",
+    "href": "Finalpresentation.html#plot-arima-forecast-for-cpi-energy",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Plot ARIMA forecast for CPI Energy",
+    "text": "Plot ARIMA forecast for CPI Energy"
+  },
+  {
+    "objectID": "Finalpresentation.html#compare-forecasts-using-cross-validation-for-multiple-time-horizons",
+    "href": "Finalpresentation.html#compare-forecasts-using-cross-validation-for-multiple-time-horizons",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Compare forecasts using cross-validation for multiple time horizons:",
+    "text": "Compare forecasts using cross-validation for multiple time horizons:\n\n\n\nThe GDP forecast details three-year monthly economic growth; the ten-month CPI energy projection highlights energy consumption changes.\nCPI energy targets consumption trends; GDP provides broader economic insights.\nComparing both offers insights into economic-energy dynamics over varying periods.\nJoint analysis of these forecasts presents a holistic economic and energy perspective."
+  },
+  {
+    "objectID": "Finalpresentation.html#discuss-the-results-and-compare-the-two-models",
+    "href": "Finalpresentation.html#discuss-the-results-and-compare-the-two-models",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Discuss the results and compare the two models:",
+    "text": "Discuss the results and compare the two models:\n\n\n\nThe three-year GDP forecast suggests robust economic growth, implying a positive outlook.\nConversely, the ten-month CPI energy forecast predicts a decrease in energy consumption.\nThe CPI energy model highlights shifts in energy demand, while the GDP model focuses on economic health.\nAnalyzing both forecasts aids stakeholders in making informed decisions regarding energy and economic strategies.\nTogether, the forecasts offer a multifaceted view of the economic and energy sectors."
+  },
+  {
+    "objectID": "Finalpresentation.html#discuss-practical-implications-of-these-forecasts-in-the-context-of-the-data",
+    "href": "Finalpresentation.html#discuss-practical-implications-of-these-forecasts-in-the-context-of-the-data",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Discuss practical implications of these forecasts in the context of the data:",
+    "text": "Discuss practical implications of these forecasts in the context of the data:\n\n\n\nThe GDP estimate helps firms and politicians make long-term investment and economic planning decisions.\nThe CPI energy forecast helps energy firms and policymakers manage resources and develop energy policies.\nBy offering a comprehensive view of economic and energy trends, combining the two predictions improves decision-making.\nThrough early planning and efficient resource allocation, stakeholders can leverage the forecasts to foresee future possibilities and difficulties."
+  },
+  {
+    "objectID": "Finalpresentation.html#section-7",
+    "href": "Finalpresentation.html#section-7",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "The GDP forecast guides long-term strategic planning for businesses and policymakers.\nThe CPI energy forecast supports energy sector resource management and policy development.\nMerging the forecasts strengthens decisions with insights into economic and energy trends.\nThese insights enable stakeholders to plan ahead and optimize resource use, preparing for future scenarios."
+  },
+  {
+    "objectID": "Finalpresentation.html#section-8",
+    "href": "Finalpresentation.html#section-8",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "THANK YOU!"
+  },
+  {
+    "objectID": "index.html#section",
+    "href": "index.html#section",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "In this presentation, we will analyze a multivariate time series dataset and perform modeling and forecasting using R.\n\nDatasets chosen:\nGross Domestic Product (GDP) dataset and the Consumer Price Index (CPI) Energy dataset.\n\nWe have chosen these datasets to explore the link between economic growth and energy prices, providing fresh insights for decision-making."
+  },
+  {
+    "objectID": "index.html#section-1",
+    "href": "index.html#section-1",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "Loading the required libraries:\n\n\n# Load required libraries\nlibrary(datasets)\nlibrary(forecast)\nlibrary(ggplot2)\n\n\nLoading both the datasets:\n\n\n# Load GDP dataset\ngdp_data &lt;- read.csv(\"GDP.csv\")\n\n# Load Consumer Price Index Energy dataset\ncpi_data &lt;- read.csv(\"CUUR0000SASLE.csv\")"
+  },
+  {
+    "objectID": "index.html#plotting-the-gdp-data",
+    "href": "index.html#plotting-the-gdp-data",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Plotting the GDP data",
+    "text": "Plotting the GDP data"
+  },
+  {
+    "objectID": "index.html#plotting-the-cpi-data",
+    "href": "index.html#plotting-the-cpi-data",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Plotting the CPI data",
+    "text": "Plotting the CPI data"
+  },
+  {
+    "objectID": "index.html#gdp-data---empirical-data-analysis",
+    "href": "index.html#gdp-data---empirical-data-analysis",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "GDP Data - Empirical Data Analysis",
+    "text": "GDP Data - Empirical Data Analysis\n\n\n      DATE                 GDP         \n Min.   :1947-01-01   Min.   :  243.2  \n 1st Qu.:1966-03-09   1st Qu.:  802.7  \n Median :1985-05-16   Median : 4340.8  \n Mean   :1985-05-16   Mean   : 7159.3  \n 3rd Qu.:2004-07-24   3rd Qu.:12360.8  \n Max.   :2023-10-01   Max.   :27944.6  \n\n\n\n\n\nThis dataset uses a range of numbers to summarise GDP growth over a significant amount of time, most likely decades.\nThe lowest and maximum GDP numbers indicate a definite upward tendency in the expansion of the economy.\nSince the median number is significantly greater than the minimum, most years had GDPs that were higher than the lowest.\nThe difference between the maximum and median values indicates that certain years saw significantly more growth than the average."
+  },
+  {
+    "objectID": "index.html#gdp-data---acf-pacf-plots-diagnostics",
+    "href": "index.html#gdp-data---acf-pacf-plots-diagnostics",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "GDP data - ACF, PACF Plots & Diagnostics",
+    "text": "GDP data - ACF, PACF Plots & Diagnostics"
+  },
+  {
+    "objectID": "index.html#gdp-data---acf-pacf-plots-diagnostics-1",
+    "href": "index.html#gdp-data---acf-pacf-plots-diagnostics-1",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "GDP data - ACF, PACF Plots & Diagnostics",
+    "text": "GDP data - ACF, PACF Plots & Diagnostics\n\n\n\nThe ACF plot at lag 1 indicates a strong correlation between current and immediate past GDP, suggesting the potential influence of the latter on the former.\nThe diminishing spikes in the ACF plot with increasing lags hint at possible seasonality, which weakens over time.\nA significant rise at lag 1 in the PACF plot supports using an AR(1) model for GDP forecasting, utilizing the previous value plus an error term.\nThe absence of significant spikes at higher lags in the PACF suggests that more complex autoregressive models might be unnecessary."
+  },
+  {
+    "objectID": "index.html#cpi-energy-consumption---empirical-data-analysis",
+    "href": "index.html#cpi-energy-consumption---empirical-data-analysis",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "CPI Energy Consumption - Empirical Data Analysis",
+    "text": "CPI Energy Consumption - Empirical Data Analysis\n\n\n      DATE            CUUR0000SASLE  \n Min.   :1957-01-01   Min.   : 21.4  \n 1st Qu.:1973-10-01   1st Qu.: 42.1  \n Median :1990-07-01   Median :142.8  \n Mean   :1990-07-01   Mean   :155.8  \n 3rd Qu.:2007-04-01   3rd Qu.:251.7  \n Max.   :2024-01-01   Max.   :408.1  \n\n\n\n\n\nThis large dataset examines the Consumer Price Index for Energy Services (CUUR0000SASLE) and spans probably more than 80 years.\nThe huge gap between the lowest and greatest numbers (21.4 vs. 408.1) points to a long-term, substantial increase in the cost of energy services.\nA skewed distribution is shown by the median (142.8) being lower than the mean (155.8), with more years having lower CUUR0000SASLE values."
+  },
+  {
+    "objectID": "index.html#cpi-energy-consumption-acf-pacf-plots-diagnostics",
+    "href": "index.html#cpi-energy-consumption-acf-pacf-plots-diagnostics",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "CPI-Energy Consumption ACF, PACF Plots & Diagnostics",
+    "text": "CPI-Energy Consumption ACF, PACF Plots & Diagnostics"
+  },
+  {
+    "objectID": "index.html#cpi-energy-consumption-acf-pacf-plots-diagnostics-1",
+    "href": "index.html#cpi-energy-consumption-acf-pacf-plots-diagnostics-1",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "CPI-Energy Consumption ACF, PACF Plots & Diagnostics",
+    "text": "CPI-Energy Consumption ACF, PACF Plots & Diagnostics\n\n\n\nAn effective plot shows errors distributed evenly along a straight line, suggesting a normal, bell-shaped distribution.\nClustering of points should be avoided, indicating unbiased error distribution.\nThe absence of curves or peculiar patterns in the line points to normally distributed errors.\nWhile a good visual plot is encouraging, further analysis is necessary to confirm the errors’ normal distribution."
+  },
+  {
+    "objectID": "index.html#section-2",
+    "href": "index.html#section-2",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "To address the task given for GDP and Consumer Price Index (CPI) Energy datasets using time series modeling, we can consider using two commonly employed models for such data:\n\nAutoregressive Integrated Moving Average (ARIMA) model and\nExponential Smoothing State Space Model (ETS)"
+  },
+  {
+    "objectID": "index.html#arima-model",
+    "href": "index.html#arima-model",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "ARIMA Model:",
+    "text": "ARIMA Model:\n\nNotation:\n\n\\(Y_t\\): the time series data at time \\(t\\)\n\\(\\nabla Y_t\\): the differenced series (e.g., \\(Y_t - Y_{t-1}\\)) to achieve stationarity\n\\(p\\): the number of lag observations included in the model (autoregressive terms)\n\\(d\\): the degree of differencing\n\\(q\\): the size of the moving average window"
+  },
+  {
+    "objectID": "index.html#relevant-mathematical-background",
+    "href": "index.html#relevant-mathematical-background",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Relevant Mathematical Background:",
+    "text": "Relevant Mathematical Background:\n\n\nThe model is defined by the equation: \\(\\nabla^d Y_t = \\alpha + \\sum_{i=1}^{p} \\phi_i \\nabla^d Y_{t-i} + \\sum_{i=1}^{q} \\theta_i \\epsilon_{t-i} + \\epsilon_t\\)\nWhere \\(\\alpha\\) is a constant, \\(\\phi_i\\) are the parameters for the autoregressive terms, \\(\\theta_i\\) are the parameters for the moving average terms, and \\(\\epsilon_t\\) is white noise."
+  },
+  {
+    "objectID": "index.html#ets-model",
+    "href": "index.html#ets-model",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "ETS Model",
+    "text": "ETS Model\n\nNotation:\n\n\\(Y_t\\): the time series data at time \\(t\\)\n\\(\\alpha, \\beta, \\gamma\\): smoothing parameters for the level, trend, and seasonal components, respectively\n\\(l_t\\): level at time \\(t\\)\n\\(b_t\\): trend at time \\(t\\)\n\\(s_t\\): seasonal component at time \\(t\\)"
+  },
+  {
+    "objectID": "index.html#relevant-mathematical-background-1",
+    "href": "index.html#relevant-mathematical-background-1",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Relevant Mathematical Background:",
+    "text": "Relevant Mathematical Background:\n\n\nThe model components are updated as follows:\n\nLevel: \\(l_t = \\alpha (Y_t - s_{t-L}) + (1 - \\alpha)(l_{t-1} + b_{t-1})\\)\nTrend: \\(b_t = \\beta (l_t - l_{t-1}) + (1 - \\beta)b_{t-1}\\)\nSeasonality: \\(s_t = \\gamma (Y_t - l_{t-1} - b_{t-1}) + (1 - \\gamma)s_{t-L}\\)\n\nWhere \\(L\\) is the length of the seasonal cycle."
+  },
+  {
+    "objectID": "index.html#application-to-datasets",
+    "href": "index.html#application-to-datasets",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Application to Datasets:",
+    "text": "Application to Datasets:\n\n\nFor GDP and CPI Energy datasets, we can follow these steps:\n\n\n1. Simulation to Demonstrate Theory:\n\n\nGenerate synthetic time series data that resembles the GDP and CPI Energy datasets.\nApply the ARIMA and ETS models to this synthetic data to demonstrate how the models capture various components like trends and seasonal effects."
+  },
+  {
+    "objectID": "index.html#section-3",
+    "href": "index.html#section-3",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "2. Fit Model to Your Dataset:\n\n\n\nUse historical data for GDP and CPI Energy to fit the ARIMA and ETS models.\nDetermine the optimal parameters (e.g., p,d,q for ARIMA) using techniques like grid search and AIC/BIC minimization.\nFor the ETS model, estimate the smoothing parameters and seasonal components."
+  },
+  {
+    "objectID": "index.html#section-4",
+    "href": "index.html#section-4",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "3. Discuss Model Fit Diagnostics:\n\n\n\nAnalyze residuals to check for any patterns or non-randomness.\nUse diagnostic plots like the autocorrelation function (ACF) and partial autocorrelation function (PACF) plots for ARIMA residuals.\nFor the ETS model, check if the level, trend, and seasonal components accurately capture the corresponding elements in the data.\nCompare the models using information criteria and out-of-sample prediction performance to assess their goodness of fit.\n\n\nThe above outlines a general approach to modeling GDP and CPI Energy datasets using time series methods."
+  },
+  {
+    "objectID": "index.html#gdp-data-simulation-and-arima-model-fit",
+    "href": "index.html#gdp-data-simulation-and-arima-model-fit",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "GDP Data Simulation and Arima Model fit",
+    "text": "GDP Data Simulation and Arima Model fit\n\n\n# Quick simulation for ARIMA model\nset.seed(123)\narima_sim &lt;- arima.sim(model = list(order = c(1,1,1), \n                                    ar = 0.7, ma = -0.5), n = 100)\n\n\n\n# Convert GDP data to a time series object\ngdp_ts &lt;- ts(gdp_data$GDP, start = c(1947, 1), frequency = 4)\n\n\n\n# Fit ARIMA model to GDP time series\narima_model_gdp &lt;- auto.arima(gdp_ts)"
+  },
+  {
+    "objectID": "index.html#diagnostic-statistics-of-arima-model",
+    "href": "index.html#diagnostic-statistics-of-arima-model",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": " Diagnostic statistics of ARIMA model ",
+    "text": "Diagnostic statistics of ARIMA model \n\n\n\n\n    Ljung-Box test\n\ndata:  Residuals from ARIMA(0,2,2)\nQ* = 6.1338, df = 6, p-value = 0.4084\n\nModel df: 2.   Total lags used: 8"
+  },
+  {
+    "objectID": "index.html#section-5",
+    "href": "index.html#section-5",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "A proper residuals plot with errors randomly centered around zero suggests no underlying patterns, indicating the model’s accuracy without consistent bias.\nResiduals evenly spread around zero reflect the model’s effectiveness in capturing the data’s trend, avoiding systematic over or underestimation.\nThe absence of outliers is crucial, as they can point to external factors unaccounted for by the model.\nDespite a satisfactory residuals plot, further validation is recommended to ensure model reliability and address potential data issues.\nThe residuals plot serves as a tool for identifying improvement areas and assessing the ARIMA model’s fit.\nThe Ljung-Box test result implies the residuals are likely random, supporting model validity.\nA high p-value (0.40) indicates minimal concerns about residual randomness.\nStill, it is essential to scrutinize the residuals plot for unusual patterns as a precaution.\nCollectively, these insights hint at the ARIMA(0,2,2) model being a potentially suitable choice."
+  },
+  {
+    "objectID": "index.html#simulation-and-state-space-model-fit-on-cpi-energy-consumption",
+    "href": "index.html#simulation-and-state-space-model-fit-on-cpi-energy-consumption",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Simulation and State Space Model fit on CPI-Energy Consumption",
+    "text": "Simulation and State Space Model fit on CPI-Energy Consumption\n\n\n# Convert CPI column to time series object\ncpi_ts &lt;- ts(cpi_data$CUUR0000SASLE, start = min(cpi_data$DATE), frequency = 12)  \n\n\n\n# Fit state space model to energy consumption data\nstsm_model_cpi &lt;- StructTS(cpi_ts)"
+  },
+  {
+    "objectID": "index.html#diagnostic-statistics-of-state-space-model",
+    "href": "index.html#diagnostic-statistics-of-state-space-model",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": " Diagnostic statistics of State Space model",
+    "text": "Diagnostic statistics of State Space model\n\n\n\n\n    Ljung-Box test\n\ndata:  Residuals from StructTS\nQ* = 612.83, df = 24, p-value &lt; 2.2e-16\n\nModel df: 0.   Total lags used: 24"
+  },
+  {
+    "objectID": "index.html#section-6",
+    "href": "index.html#section-6",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "The Ljung-Box test indicates potential issues with a high Q* and low p-value.\nThis suggests the model’s residuals are not random but show dependency, indicating autocorrelation.\nThe influence of past errors on current errors isn’t being sufficiently addressed by the model.\nThe autocorrelation concern persists across multiple time steps (24 lags).\nThese findings suggest the need for adjustments to the Structural Time Series model to address the non-random error behavior."
+  },
+  {
+    "objectID": "index.html#gdp-forecasting-using-arima",
+    "href": "index.html#gdp-forecasting-using-arima",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "GDP Forecasting Using ARIMA",
+    "text": "GDP Forecasting Using ARIMA\n\n\n\n[1] \"ARIMA Forecast for GDP:\"\n\n\n        Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95\n2024 Q1       28318.10 28101.50 28534.71 27986.83 28649.37\n2024 Q2       28689.51 28389.74 28989.28 28231.05 29147.97\n2024 Q3       29060.92 28686.46 29435.38 28488.23 29633.61\n2024 Q4       29432.33 28986.70 29877.96 28750.79 30113.87\n2025 Q1       29803.74 29288.42 30319.06 29015.62 30591.85\n2025 Q2       30175.15 29590.59 30759.70 29281.14 31069.15\n2025 Q3       30546.55 29892.61 31200.50 29546.43 31546.67\n2025 Q4       30917.96 30194.12 31641.80 29810.95 32024.98\n2026 Q1       31289.37 30494.89 32083.86 30074.31 32504.43\n2026 Q2       31660.78 30794.74 32526.82 30336.29 32985.27\n2026 Q3       32032.19 31093.59 32970.79 30596.72 33467.66\n2026 Q4       32403.60 31391.34 33415.85 30855.49 33951.71"
+  },
+  {
+    "objectID": "index.html#plot-arima-forecast-for-gdp",
+    "href": "index.html#plot-arima-forecast-for-gdp",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Plot ARIMA forecast for GDP",
+    "text": "Plot ARIMA forecast for GDP"
+  },
+  {
+    "objectID": "index.html#cpi-energy-forecasting-using-state-space",
+    "href": "index.html#cpi-energy-forecasting-using-state-space",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "CPI-Energy Forecasting using State Space",
+    "text": "CPI-Energy Forecasting using State Space\n\n\n\n[1] \"State Space Model Forecast for CPI Energy:\"\n\n\n         Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95\nFeb 2024       410.7652 410.1985 411.3318 409.8985 411.6318\nMar 2024       413.4781 412.2109 414.7452 411.5402 415.4160\nApr 2024       416.1914 414.0711 418.3118 412.9487 419.4342\nMay 2024       418.9048 415.8009 422.0086 414.1579 423.6517\nJun 2024       421.6182 417.4155 425.8208 415.1908 428.0455\nJul 2024       424.3315 418.9257 429.7373 416.0640 432.5990\nAug 2024       427.0449 420.3398 433.7500 416.7903 437.2994\nSep 2024       429.7582 421.6644 437.8521 417.3797 442.1367\nOct 2024       432.4716 422.9049 442.0383 417.8405 447.1026\nNov 2024       435.1850 424.0658 446.3041 418.1797 452.1902\nDec 2024       437.8983 425.1511 450.6456 418.4031 457.3935\nJan 2025       440.6113 426.1636 455.0590 418.5155 462.7071"
+  },
+  {
+    "objectID": "index.html#plot-arima-forecast-for-cpi-energy",
+    "href": "index.html#plot-arima-forecast-for-cpi-energy",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Plot ARIMA forecast for CPI Energy",
+    "text": "Plot ARIMA forecast for CPI Energy"
+  },
+  {
+    "objectID": "index.html#compare-forecasts-using-cross-validation-for-multiple-time-horizons",
+    "href": "index.html#compare-forecasts-using-cross-validation-for-multiple-time-horizons",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Compare forecasts using cross-validation for multiple time horizons:",
+    "text": "Compare forecasts using cross-validation for multiple time horizons:\n\n\n\nThe GDP forecast details three-year monthly economic growth; the ten-month CPI energy projection highlights energy consumption changes.\nCPI energy targets consumption trends; GDP provides broader economic insights.\nComparing both offers insights into economic-energy dynamics over varying periods.\nJoint analysis of these forecasts presents a holistic economic and energy perspective."
+  },
+  {
+    "objectID": "index.html#discuss-the-results-and-compare-the-two-models",
+    "href": "index.html#discuss-the-results-and-compare-the-two-models",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Discuss the results and compare the two models:",
+    "text": "Discuss the results and compare the two models:\n\n\n\nThe three-year GDP forecast suggests robust economic growth, implying a positive outlook.\nConversely, the ten-month CPI energy forecast predicts a decrease in energy consumption.\nThe CPI energy model highlights shifts in energy demand, while the GDP model focuses on economic health.\nAnalyzing both forecasts aids stakeholders in making informed decisions regarding energy and economic strategies.\nTogether, the forecasts offer a multifaceted view of the economic and energy sectors."
+  },
+  {
+    "objectID": "index.html#discuss-practical-implications-of-these-forecasts-in-the-context-of-the-data",
+    "href": "index.html#discuss-practical-implications-of-these-forecasts-in-the-context-of-the-data",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Discuss practical implications of these forecasts in the context of the data:",
+    "text": "Discuss practical implications of these forecasts in the context of the data:\n\n\n\nThe GDP estimate helps firms and politicians make long-term investment and economic planning decisions.\nThe CPI energy forecast helps energy firms and policymakers manage resources and develop energy policies.\nBy offering a comprehensive view of economic and energy trends, combining the two predictions improves decision-making.\nThrough early planning and efficient resource allocation, stakeholders can leverage the forecasts to foresee future possibilities and difficulties."
+  },
+  {
+    "objectID": "index.html#section-7",
+    "href": "index.html#section-7",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "The GDP forecast guides long-term strategic planning for businesses and policymakers.\nThe CPI energy forecast supports energy sector resource management and policy development.\nMerging the forecasts strengthens decisions with insights into economic and energy trends.\nThese insights enable stakeholders to plan ahead and optimize resource use, preparing for future scenarios."
+  },
+  {
+    "objectID": "index.html#section-8",
+    "href": "index.html#section-8",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "",
+    "text": "THANK YOU!"
+  }
+]

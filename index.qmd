@@ -1,0 +1,576 @@
+---
+title: "Time Series Analysis Presentation Midterm"
+author: "Group No. 15 - Tejesh Pawar, Anju Anand"
+format: revealjs
+editor: source
+toc: true
+toc-depth: 1
+slide-number: true
+smaller: false
+scrollable: true 
+editor_options: 
+  chunk_output_type: console
+---
+
+# Introduction
+
+##
+
+In this presentation, we will analyze a multivariate time series dataset and perform modeling and forecasting using R.
+
+</br>
+
+Datasets chosen: 
+
+
+**Gross Domestic Product (GDP)** dataset and the **Consumer Price Index (CPI) Energy** dataset.
+
+</br>
+
+We have chosen these datasets to explore the link between economic growth and energy prices, providing fresh insights for decision-making.
+
+## 
+
+### <span style="font-size: 40px;">Loading the required libraries:</span>
+
+</br>
+
+```{r, echo = TRUE}
+# Load required libraries
+library(datasets)
+library(forecast)
+library(ggplot2)
+```
+
+</br>
+
+### <span style="font-size: 40px;">Loading both the datasets:</span>
+
+</br>
+
+```{r, echo = TRUE}
+# Load GDP dataset
+gdp_data <- read.csv("GDP.csv")
+
+# Load Consumer Price Index Energy dataset
+cpi_data <- read.csv("CUUR0000SASLE.csv")
+
+```
+
+
+## Plotting the GDP data
+
+</br>
+
+```{r}
+# Convert the DATE column to Date type
+gdp_data$DATE <- as.Date(gdp_data$DATE)
+
+# Plot the GDP time series data
+g <- ggplot(gdp_data, aes(x=DATE, y=GDP)) +
+  geom_line() + # Line plot for the time series
+  labs(title="GDP Over Time", x="Date", y="GDP (in billions)") + # Adding labels
+  theme_minimal() # Minimal theme for a nicer look
+
+# Display the plot
+print(g)
+```
+
+
+## Plotting the CPI data
+
+</br>
+
+```{r}
+# Convert the DATE column to Date type
+cpi_data$DATE <- as.Date(cpi_data$DATE)
+
+# Plot the CPI Energy time series data
+g <- ggplot(cpi_data, aes(x=DATE, y=CUUR0000SASLE)) +
+  geom_line() + # Line plot for the time series
+  labs(title="CPI Energy Over Time", x="Date", y="CPI Energy Index") + # Adding labels
+  theme_minimal() # Minimal theme for a nicer look
+
+# Display the plot
+print(g)
+```
+
+## GDP Data - Empirical Data Analysis
+
+```{r}
+# Summary of GDP dataset
+summary(gdp_data)
+
+# converting to numeric values
+gdp_values <- as.numeric(gdp_data$GDP)
+
+# Plotting GDP data against dates
+plot(as.Date(gdp_data$DATE), gdp_values, type = "l", xlab = "Date", ylab = "GDP", main = "GDP Time Series")
+```
+
+::: {style="font-size: 70%;"}
+
+
+* This dataset uses a range of numbers to summarise GDP growth over a significant amount of time, most likely decades.
+
+* The lowest and maximum GDP numbers indicate a definite upward tendency in the expansion of the economy.
+
+* Since the median number is significantly greater than the minimum, most years had GDPs that were higher than the lowest.
+
+* The difference between the maximum and median values indicates that certain years saw significantly more growth than the average.
+
+:::
+
+## GDP data - ACF, PACF Plots & Diagnostics
+
+```{r}
+# Plot ACF and PACF of GDP data
+par(mfrow = c(1, 2))  
+acf(gdp_values, main = "ACF of GDP Data")
+pacf(gdp_values, main = "PACF of GDP Data")
+```
+
+
+## GDP data - ACF, PACF Plots & Diagnostics
+
+</br>
+
+
+::: {style="font-size: 72%;"}
+
+* The ACF plot at lag 1 indicates a strong correlation between current and immediate past GDP, suggesting the potential influence of the latter on the former.
+
+* The diminishing spikes in the ACF plot with increasing lags hint at possible seasonality, which weakens over time.
+
+* A significant rise at lag 1 in the PACF plot supports using an AR(1) model for GDP forecasting, utilizing the previous value plus an error term.
+
+* The absence of significant spikes at higher lags in the PACF suggests that more complex autoregressive models might be unnecessary.
+
+
+:::
+
+
+
+## CPI Energy Consumption - Empirical Data Analysis
+
+```{r}
+# Summary of CPI dataset
+summary(cpi_data)
+
+# Convert DATE column to Date class
+cpi_data$DATE <- as.Date(cpi_data$DATE)
+
+# Plot CPI data against dates
+plot(cpi_data$DATE, cpi_data$CUUR0000SASLE, type = "l", xlab = "Date", ylab = "CPI", main = "CPI-Energy services Time Series")
+```
+
+
+
+::: {style="font-size: 70%;"}
+
+* This large dataset examines the Consumer Price Index for Energy Services (CUUR0000SASLE) and spans probably more than 80 years.
+
+* The huge gap between the lowest and greatest numbers (21.4 vs. 408.1) points to a long-term, substantial increase in the cost of energy services.
+
+* A skewed distribution is shown by the median (142.8) being lower than the mean (155.8), with more years having lower CUUR0000SASLE values.
+
+
+:::
+
+
+
+## CPI-Energy Consumption ACF, PACF Plots & Diagnostics
+
+```{r}
+# Plot ACF and PACF of CPI data
+par(mfrow=c(1,2))
+acf(cpi_data$CUUR0000SASLE, main = "ACF for CPI Data")
+pacf(cpi_data$CUUR0000SASLE, main = "PACF for CPI Data")
+```
+
+
+## CPI-Energy Consumption ACF, PACF Plots & Diagnostics
+
+</br>
+
+::: {style="font-size: 80%;"}
+
+* An effective plot shows errors distributed evenly along a straight line, suggesting a normal, bell-shaped distribution.
+
+* Clustering of points should be avoided, indicating unbiased error distribution.
+
+* The absence of curves or peculiar patterns in the line points to normally distributed errors.
+
+* While a good visual plot is encouraging, further analysis is necessary to confirm the errors' normal distribution.
+
+:::
+
+
+
+# Modeling
+
+## 
+
+</br>
+
+To address the task given for GDP and Consumer Price Index (CPI) Energy datasets using time series modeling, we can consider using two commonly employed models for such data: 
+
+* **Autoregressive Integrated Moving Average (ARIMA) model** 
+</br>and</br>
+* **Exponential Smoothing State Space Model (ETS)**
+
+
+## ARIMA Model:
+</br>
+
+##### Notation:
+
+- $Y_t$: the time series data at time $t$
+- $\nabla Y_t$: the differenced series (e.g., $Y_t - Y_{t-1}$) to achieve stationarity
+- $p$: the number of lag observations included in the model (autoregressive terms)
+- $d$: the degree of differencing
+- $q$: the size of the moving average window
+
+
+## Relevant Mathematical Background:
+
+</br>
+
+- The model is defined by the equation: $\nabla^d Y_t = \alpha + \sum_{i=1}^{p} \phi_i \nabla^d Y_{t-i} + \sum_{i=1}^{q} \theta_i \epsilon_{t-i} + \epsilon_t$
+- Where $\alpha$ is a constant, $\phi_i$ are the parameters for the autoregressive terms, $\theta_i$ are the parameters for the moving average terms, and $\epsilon_t$ is white noise.
+
+
+
+## ETS Model
+</br>
+
+#### Notation:
+
+- $Y_t$: the time series data at time $t$
+- $\alpha, \beta, \gamma$: smoothing parameters for the level, trend, and seasonal components, respectively
+- $l_t$: level at time $t$
+- $b_t$: trend at time $t$
+- $s_t$: seasonal component at time $t$
+
+##  Relevant Mathematical Background:
+
+</br>
+
+- The model components are updated as follows:
+  - Level: $l_t = \alpha (Y_t - s_{t-L}) + (1 - \alpha)(l_{t-1} + b_{t-1})$
+  - Trend: $b_t = \beta (l_t - l_{t-1}) + (1 - \beta)b_{t-1}$
+  - Seasonality: $s_t = \gamma (Y_t - l_{t-1} - b_{t-1}) + (1 - \gamma)s_{t-L}$
+- Where $L$ is the length of the seasonal cycle.
+
+
+## Application to Datasets:
+
+</br>
+
+::: {style="font-size: 75%;"}
+
+For GDP and CPI Energy datasets, we can follow these steps:
+
+:::
+
+</br>
+
+
+**<span style="font-size: 50px;">1. Simulation to Demonstrate Theory:</span>**
+
+
+::: {style="font-size: 75%;"}
+
+  * Generate synthetic time series data that resembles the GDP and CPI Energy datasets.
+  * Apply the ARIMA and ETS models to this synthetic data to demonstrate how the models capture various components like trends and seasonal effects.
+
+:::
+  
+## 
+
+</br>
+
+
+**<span style="font-size: 50px;">2. Fit Model to Your Dataset:</span>**
+
+</br>
+
+::: {style="font-size: 75%;"}
+
+  * Use historical data for GDP and CPI Energy to fit the ARIMA and ETS models.
+  * Determine the optimal parameters (e.g., *p,d,q* for ARIMA) using techniques like grid search and AIC/BIC minimization.
+  - For the ETS model, estimate the smoothing parameters and seasonal components.
+
+:::
+ 
+## 
+
+
+**<span style="font-size: 50px;">3. Discuss Model Fit Diagnostics:</span>**
+
+
+</br>
+
+::: {style="font-size: 75%;"}
+
+  - Analyze residuals to check for any patterns or non-randomness.
+  - Use diagnostic plots like the autocorrelation function (ACF) and partial autocorrelation function (PACF) plots for ARIMA residuals.
+  - For the ETS model, check if the level, trend, and seasonal components accurately capture the corresponding elements in the data.
+  - Compare the models using information criteria and out-of-sample prediction performance to assess their goodness of fit.
+  
+</br>
+  
+The above outlines a general approach to modeling GDP and CPI Energy datasets using time series methods. 
+
+:::
+
+
+
+## GDP Data Simulation and Arima Model fit
+
+</br>
+
+```{r, echo = TRUE}
+# Quick simulation for ARIMA model
+set.seed(123)
+arima_sim <- arima.sim(model = list(order = c(1,1,1), 
+                                    ar = 0.7, ma = -0.5), n = 100)
+
+```
+
+</br>
+
+```{r, echo = TRUE}
+# Convert GDP data to a time series object
+gdp_ts <- ts(gdp_data$GDP, start = c(1947, 1), frequency = 4)
+
+```
+
+</br>
+
+```{r, echo = TRUE}
+# Fit ARIMA model to GDP time series
+arima_model_gdp <- auto.arima(gdp_ts)
+```
+
+
+## <span style="font-size: 50px;"> Diagnostic statistics of ARIMA model </span>
+
+```{r}
+# Diagnostic statistics of ARIMA model
+checkresiduals(arima_model_gdp)
+```
+
+## 
+
+::: {style="font-size: 68%;"}
+
+* A proper residuals plot with errors randomly centered around zero suggests no underlying patterns, indicating the model's accuracy without consistent bias.
+
+* Residuals evenly spread around zero reflect the model's effectiveness in capturing the data's trend, avoiding systematic over or underestimation.
+
+* The absence of outliers is crucial, as they can point to external factors unaccounted for by the model.
+
+* Despite a satisfactory residuals plot, further validation is recommended to ensure model reliability and address potential data issues.
+
+* The residuals plot serves as a tool for identifying improvement areas and assessing the ARIMA model's fit.
+
+* The Ljung-Box test result implies the residuals are likely random, supporting model validity.
+
+* A high p-value (0.40) indicates minimal concerns about residual randomness.
+
+* Still, it is essential to scrutinize the residuals plot for unusual patterns as a precaution.
+
+* Collectively, these insights hint at the ARIMA(0,2,2) model being a potentially suitable choice.
+
+:::
+
+## Simulation and State Space Model fit on CPI-Energy Consumption
+
+</br>
+
+```{r, echo = TRUE}
+# Convert CPI column to time series object
+cpi_ts <- ts(cpi_data$CUUR0000SASLE, start = min(cpi_data$DATE), frequency = 12)  
+
+```
+
+</br>
+
+```{r, echo = TRUE}
+# Fit state space model to energy consumption data
+stsm_model_cpi <- StructTS(cpi_ts)
+
+```
+
+## <span style="font-size: 50px;"> Diagnostic statistics of State Space model</span>
+
+
+```{r}
+# Diagnostic statistics of State Space model
+checkresiduals(stsm_model_cpi)
+```
+
+## 
+
+</br>
+</br>
+
+::: {style="font-size: 80%;"}
+
+* The Ljung-Box test indicates potential issues with a high Q* and low p-value.
+
+* This suggests the model's residuals are not random but show dependency, indicating autocorrelation.
+
+* The influence of past errors on current errors isn't being sufficiently addressed by the model.
+
+* The autocorrelation concern persists across multiple time steps (24 lags).
+
+* These findings suggest the need for adjustments to the Structural Time Series model to address the non-random error behavior.
+
+:::
+
+
+
+# Forecasting
+
+
+## GDP Forecasting Using ARIMA
+
+</br>
+
+```{r}
+# Forecasting using ARIMA model for GDP
+arima_forecast <- forecast(arima_model_gdp, h = 12)
+
+# Print forecasts
+print("ARIMA Forecast for GDP:")
+print(arima_forecast)
+
+```
+
+
+## Plot ARIMA forecast for GDP
+
+</br>
+
+
+```{r}
+plot(arima_forecast, main = "ARIMA Forecast for GDP", xlab = "Year", ylab = "GDP Value")
+legend("topleft", legend = "Forecast", col = "blue", lty = 1, inset = c(0, 0), xpd = TRUE)
+
+```
+
+
+## CPI-Energy Forecasting using State Space
+
+</br>
+
+```{r}
+# Convert DATE column to Date format
+cpi_data$DATE <- as.Date(cpi_data$DATE)
+
+# Create a time series object with correct start and frequency
+cpi_ts <- ts(cpi_data$CUUR0000SASLE, start = c(1957, 1), frequency = 12)
+
+# Fit state space model
+ss_model <- StructTS(cpi_ts, type = "BSM")
+
+# Forecast using the state space model
+forecast_values <- forecast(ss_model, h = 12)
+
+# Print forecasts
+print("State Space Model Forecast for CPI Energy:")
+print(forecast_values)
+```
+
+## Plot ARIMA forecast for CPI Energy
+
+</br>
+```{r}
+# Plot State Space Model forecast for CPI Energy
+plot(forecast_values, main = "State Space Model Forecast for CPI Energy", xlab = "Year", ylab = "CPI Energy Index")
+legend("topleft", legend = "Forecast", col = "blue", lty = 1, inset = c(0, 0), xpd = TRUE)
+
+```
+</br>
+
+## Compare forecasts using cross-validation for multiple time horizons:
+
+</br>
+
+::: {style="font-size: 70%;"}
+
+* The GDP forecast details three-year monthly economic growth; the ten-month CPI energy projection highlights energy consumption changes.
+
+* CPI energy targets consumption trends; GDP provides broader economic insights.
+
+* Comparing both offers insights into economic-energy dynamics over varying periods.
+
+* Joint analysis of these forecasts presents a holistic economic and energy perspective.
+:::
+
+## Discuss the results and compare the two models:
+
+</br>
+
+::: {style="font-size: 70%;"}
+
+* The three-year GDP forecast suggests robust economic growth, implying a positive outlook.
+
+* Conversely, the ten-month CPI energy forecast predicts a decrease in energy consumption.
+
+* The CPI energy model highlights shifts in energy demand, while the GDP model focuses on economic health.
+
+* Analyzing both forecasts aids stakeholders in making informed decisions regarding energy and economic strategies.
+
+* Together, the forecasts offer a multifaceted view of the economic and energy sectors.
+
+:::
+
+## Discuss practical implications of these forecasts in the context of the data:
+
+</br>
+
+::: {style="font-size: 70%;"}
+
+* The GDP estimate helps firms and politicians make long-term investment and economic planning decisions.
+
+* The CPI energy forecast helps energy firms and policymakers manage resources and develop energy policies.
+
+* By offering a comprehensive view of economic and energy trends, combining the two predictions improves decision-making.
+
+* Through early planning and efficient resource allocation, stakeholders can leverage the forecasts to foresee future possibilities and difficulties.
+
+:::
+
+# Conclusion
+
+## 
+
+</br>
+</br>
+
+::: {style="font-size: 70%;"}
+* The GDP forecast guides long-term strategic planning for businesses and policymakers.
+
+* The CPI energy forecast supports energy sector resource management and policy development.
+
+* Merging the forecasts strengthens decisions with insights into economic and energy trends.
+
+* These insights enable stakeholders to plan ahead and optimize resource use, preparing for future scenarios.
+
+::: 
+
+# Questions?
+
+
+##
+</br>
+</br>
+</br>
+</br>
+<span style="display:block; text-align:center; font-size: 110px;">**THANK YOU!**</span>
+
+```{r}
+```
