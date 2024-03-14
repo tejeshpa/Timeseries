@@ -217,7 +217,7 @@ To address the task given for GDP and Consumer Price Index (CPI) Energy datasets
 
 * **Autoregressive Integrated Moving Average (ARIMA) model** 
 </br>and</br>
-* **Exponential Smoothing State Space Model (ETS)**
+* **State Space Model**
 
 
 ## ARIMA Model:
@@ -241,7 +241,7 @@ To address the task given for GDP and Consumer Price Index (CPI) Energy datasets
 
 
 
-## ETS Model
+## State Space Model
 </br>
 
 #### Notation:
