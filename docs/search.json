@@ -361,7 +361,7 @@
     "href": "index.html#gdp-data-simulation-and-arima-model-fit",
     "title": "Time Series Analysis Presentation Midterm",
     "section": "GDP Data Simulation and Arima Model fit",
-    "text": "GDP Data Simulation and Arima Model fit\n\n\n# Quick simulation for ARIMA model\nset.seed(123)\narima_sim &lt;- arima.sim(model = list(order = c(1,1,1), \n                                    ar = 0.7, ma = -0.5), n = 100)\n\n\n\n# Convert GDP data to a time series object\ngdp_ts &lt;- ts(gdp_data$GDP, start = c(1947, 1), frequency = 4)\n\n\n\n# Fit ARIMA model to GDP time series\narima_model_gdp &lt;- auto.arima(gdp_ts)"
+    "text": "GDP Data Simulation and Arima Model fit\n\n\n# Quick simulation for ARIMA model\nset.seed(123)\narima_sim &lt;- arima.sim(model = list(order = c(1,1,1), \n                                    ar = 0.7, ma = -0.5), n = 100)\n\n\n\n# Fit ARIMA model to GDP time series\narima_model_gdp &lt;- auto.arima(gdp_ts)"
   },
   {
     "objectID": "index.html#diagnostic-statistics-of-arima-model",
@@ -375,7 +375,7 @@
     "href": "index.html#section-5",
     "title": "Time Series Analysis Presentation Midterm",
     "section": "",
-    "text": "A proper residuals plot with errors randomly centered around zero suggests no underlying patterns, indicating the model’s accuracy without consistent bias.\nResiduals evenly spread around zero reflect the model’s effectiveness in capturing the data’s trend, avoiding systematic over or underestimation.\nThe absence of outliers is crucial, as they can point to external factors unaccounted for by the model.\nDespite a satisfactory residuals plot, further validation is recommended to ensure model reliability and address potential data issues.\nThe residuals plot serves as a tool for identifying improvement areas and assessing the ARIMA model’s fit.\nThe Ljung-Box test result implies the residuals are likely random, supporting model validity.\nA high p-value (0.40) indicates minimal concerns about residual randomness.\nStill, it is essential to scrutinize the residuals plot for unusual patterns as a precaution.\nCollectively, these insights hint at the ARIMA(0,2,2) model being a potentially suitable choice."
+    "text": "A proper residuals plot with errors randomly centered around zero suggests no underlying patterns, indicating the model’s accuracy without consistent bias.\nResiduals evenly spread around zero reflect the model’s effectiveness in capturing the data’s trend, avoiding systematic over or underestimation.\nThe absence of outliers is crucial, as they can point to external factors unaccounted for by the model.\nThe residuals plot serves as a tool for identifying improvement areas and assessing the ARIMA model’s fit.\nThe Ljung-Box test result implies the residuals are likely random, supporting model validity.\nA high p-value (0.40) indicates minimal concerns about residual randomness.\nCollectively, these insights hint at the ARIMA(0,2,2) model being a potentially suitable choice."
   },
   {
     "objectID": "index.html#simulation-and-state-space-model-fit-on-cpi-energy-consumption",
@@ -460,5 +460,12 @@
     "title": "Time Series Analysis Presentation Midterm",
     "section": "",
     "text": "THANK YOU!"
+  },
+  {
+    "objectID": "index.html#plot-state-space-forecast-for-cpi-energy",
+    "href": "index.html#plot-state-space-forecast-for-cpi-energy",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "Plot State Space forecast for CPI Energy",
+    "text": "Plot State Space forecast for CPI Energy"
   }
 ]

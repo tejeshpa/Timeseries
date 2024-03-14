@@ -338,9 +338,9 @@ arima_sim <- arima.sim(model = list(order = c(1,1,1),
 
 ```
 
-</br>
 
-```{r, echo = TRUE}
+
+```{r}
 # Convert GDP data to a time series object
 gdp_ts <- ts(gdp_data$GDP, start = c(1947, 1), frequency = 4)
 
@@ -363,6 +363,8 @@ checkresiduals(arima_model_gdp)
 
 ## 
 
+</br>
+
 ::: {style="font-size: 68%;"}
 
 * A proper residuals plot with errors randomly centered around zero suggests no underlying patterns, indicating the model's accuracy without consistent bias.
@@ -371,15 +373,11 @@ checkresiduals(arima_model_gdp)
 
 * The absence of outliers is crucial, as they can point to external factors unaccounted for by the model.
 
-* Despite a satisfactory residuals plot, further validation is recommended to ensure model reliability and address potential data issues.
-
 * The residuals plot serves as a tool for identifying improvement areas and assessing the ARIMA model's fit.
 
 * The Ljung-Box test result implies the residuals are likely random, supporting model validity.
 
 * A high p-value (0.40) indicates minimal concerns about residual randomness.
-
-* Still, it is essential to scrutinize the residuals plot for unusual patterns as a precaution.
 
 * Collectively, these insights hint at the ARIMA(0,2,2) model being a potentially suitable choice.
 
@@ -484,7 +482,7 @@ print("State Space Model Forecast for CPI Energy:")
 print(forecast_values)
 ```
 
-## Plot ARIMA forecast for CPI Energy
+## Plot State Space forecast for CPI Energy
 
 </br>
 ```{r}

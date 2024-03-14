@@ -648,13 +648,8 @@ Group No.&nbsp;15 - Tejesh Pawar, Anju Anand
 </div>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Convert GDP data to a time series object</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>gdp_ts <span class="ot">&lt;-</span> <span class="fu">ts</span>(gdp_data<span class="sc">$</span>GDP, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1947</span>, <span class="dv">1</span>), <span class="at">frequency =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><br></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Fit ARIMA model to GDP time series</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>arima_model_gdp <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(gdp_ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Fit ARIMA model to GDP time series</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>arima_model_gdp <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(gdp_ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="diagnostic-statistics-of-arima-model" class="slide level2">
@@ -674,16 +669,15 @@ Model df: 2.   Total lags used: 8</code></pre>
 <img data-src="index_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
 <section id="section-5" class="slide level2">
 <h2></h2>
+<p><br></p>
 <div style="font-size: 68%;">
 <ul>
 <li><p>A proper residuals plot with errors randomly centered around zero suggests no underlying patterns, indicating the model’s accuracy without consistent bias.</p></li>
 <li><p>Residuals evenly spread around zero reflect the model’s effectiveness in capturing the data’s trend, avoiding systematic over or underestimation.</p></li>
 <li><p>The absence of outliers is crucial, as they can point to external factors unaccounted for by the model.</p></li>
-<li><p>Despite a satisfactory residuals plot, further validation is recommended to ensure model reliability and address potential data issues.</p></li>
 <li><p>The residuals plot serves as a tool for identifying improvement areas and assessing the ARIMA model’s fit.</p></li>
 <li><p>The Ljung-Box test result implies the residuals are likely random, supporting model validity.</p></li>
 <li><p>A high p-value (0.40) indicates minimal concerns about residual randomness.</p></li>
-<li><p>Still, it is essential to scrutinize the residuals plot for unusual patterns as a precaution.</p></li>
 <li><p>Collectively, these insights hint at the ARIMA(0,2,2) model being a potentially suitable choice.</p></li>
 </ul>
 </div>
@@ -692,13 +686,13 @@ Model df: 2.   Total lags used: 8</code></pre>
 <h2>Simulation and State Space Model fit on CPI-Energy Consumption</h2>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Convert CPI column to time series object</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>cpi_ts <span class="ot">&lt;-</span> <span class="fu">ts</span>(cpi_data<span class="sc">$</span>CUUR0000SASLE, <span class="at">start =</span> <span class="fu">min</span>(cpi_data<span class="sc">$</span>DATE), <span class="at">frequency =</span> <span class="dv">12</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Convert CPI column to time series object</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>cpi_ts <span class="ot">&lt;-</span> <span class="fu">ts</span>(cpi_data<span class="sc">$</span>CUUR0000SASLE, <span class="at">start =</span> <span class="fu">min</span>(cpi_data<span class="sc">$</span>DATE), <span class="at">frequency =</span> <span class="dv">12</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Fit state space model to energy consumption data</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>stsm_model_cpi <span class="ot">&lt;-</span> <span class="fu">StructTS</span>(cpi_ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Fit state space model to energy consumption data</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>stsm_model_cpi <span class="ot">&lt;-</span> <span class="fu">StructTS</span>(cpi_ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="diagnostic-statistics-of-state-space-model" class="slide level2">
@@ -787,8 +781,8 @@ Jan 2025       440.6113 426.1636 455.0590 418.5155 462.7071</code></pre>
 </div>
 </div>
 </section>
-<section id="plot-arima-forecast-for-cpi-energy" class="slide level2">
-<h2>Plot ARIMA forecast for CPI Energy</h2>
+<section id="plot-state-space-forecast-for-cpi-energy" class="slide level2">
+<h2>Plot State Space forecast for CPI Energy</h2>
 <p><br></p>
 
 <img data-src="index_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"><p><br></p>
