@@ -282,7 +282,7 @@ For GDP and CPI Energy datasets, we can follow these steps:
 ::: {style="font-size: 75%;"}
 
   * Generate synthetic time series data that resembles the GDP and CPI Energy datasets.
-  * Apply the ARIMA and ETS models to this synthetic data to demonstrate how the models capture various components like trends and seasonal effects.
+  * Apply the ARIMA and state space model to this synthetic data to demonstrate how the models capture various components like trends and seasonal effects.
 
 :::
   
@@ -297,7 +297,7 @@ For GDP and CPI Energy datasets, we can follow these steps:
 
 ::: {style="font-size: 75%;"}
 
-  * Use historical data for GDP and CPI Energy to fit the ARIMA and ETS models.
+  * Use historical data for GDP and CPI Energy to fit the ARIMA and state space models.
   * Determine the optimal parameters (e.g., *p,d,q* for ARIMA) using techniques like grid search and AIC/BIC minimization.
   - For the ETS model, estimate the smoothing parameters and seasonal components.
 
@@ -315,7 +315,7 @@ For GDP and CPI Energy datasets, we can follow these steps:
 
   - Analyze residuals to check for any patterns or non-randomness.
   - Use diagnostic plots like the autocorrelation function (ACF) and partial autocorrelation function (PACF) plots for ARIMA residuals.
-  - For the ETS model, check if the level, trend, and seasonal components accurately capture the corresponding elements in the data.
+  - For the state space model, check if the level, trend, and seasonal components accurately capture the corresponding elements in the data.
   - Compare the models using information criteria and out-of-sample prediction performance to assess their goodness of fit.
   
 </br>
