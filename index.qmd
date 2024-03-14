@@ -299,7 +299,7 @@ For GDP and CPI Energy datasets, we can follow these steps:
 
   * Use historical data for GDP and CPI Energy to fit the ARIMA and state space models.
   * Determine the optimal parameters (e.g., *p,d,q* for ARIMA) using techniques like grid search and AIC/BIC minimization.
-  - For the ETS model, estimate the smoothing parameters and seasonal components.
+  - For the state space model, estimate the smoothing parameters and seasonal components.
 
 :::
  
