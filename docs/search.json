@@ -305,7 +305,7 @@
     "href": "index.html#section-2",
     "title": "Time Series Analysis Presentation Midterm",
     "section": "",
-    "text": "To address the task given for GDP and Consumer Price Index (CPI) Energy datasets using time series modeling, we can consider using two commonly employed models for such data:\n\nAutoregressive Integrated Moving Average (ARIMA) model and\nExponential Smoothing State Space Model (ETS)"
+    "text": "To address the task given for GDP and Consumer Price Index (CPI) Energy datasets using time series modeling, we can consider using two commonly employed models for such data:\n\nAutoregressive Integrated Moving Average (ARIMA) model and\nState Space Model"
   },
   {
     "objectID": "index.html#arima-model",
@@ -467,5 +467,12 @@
     "title": "Time Series Analysis Presentation Midterm",
     "section": "Plot State Space forecast for CPI Energy",
     "text": "Plot State Space forecast for CPI Energy"
+  },
+  {
+    "objectID": "index.html#state-space-model",
+    "href": "index.html#state-space-model",
+    "title": "Time Series Analysis Presentation Midterm",
+    "section": "State Space Model",
+    "text": "State Space Model\n\nNotation:\n\n\\(Y_t\\): the time series data at time \\(t\\)\n\\(\\alpha, \\beta, \\gamma\\): smoothing parameters for the level, trend, and seasonal components, respectively\n\\(l_t\\): level at time \\(t\\)\n\\(b_t\\): trend at time \\(t\\)\n\\(s_t\\): seasonal component at time \\(t\\)"
   }
 ]
