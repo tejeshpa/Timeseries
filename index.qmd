@@ -282,7 +282,7 @@ For GDP and CPI Energy datasets, we can follow these steps:
 ::: {style="font-size: 75%;"}
 
   * Generate synthetic time series data that resembles the GDP and CPI Energy datasets.
-  * Apply the ARIMA and state space model to this synthetic data to demonstrate how the models capture various components like trends and seasonal effects.
+  * Apply the ARIMA and state space models to this synthetic data to demonstrate how the models capture various components like trends and seasonal effects.
 
 :::
   
